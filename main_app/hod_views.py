@@ -678,3 +678,81 @@ def delete_session(request, session_id):
         messages.error(
             request, "There are students assigned to this session. Please move them to another session.")
     return redirect(reverse('manage_session'))
+
+
+
+
+
+# =========================================================================================================================================
+# ============================================================== CODIGO UMG ===============================================================
+# =========================================================================================================================================
+
+# =================================================================
+# CENTRO UNIVERSITARIO
+# =================================================================
+def agregar_centro(request):
+    form = CentroForm(request.POST or None)
+    context = {
+        'form': form,
+        'page_title': 'Agregar Centro'
+    }
+    if request.method == 'POST':
+        if form.is_valid():
+            nombre_html = form.cleaned_data.get('nombre')
+            try:
+                centro = Centro()
+                centro.nombre = nombre_html
+                centro.save()
+                messages.success(request, "Centro agregado")
+                return redirect(reverse('agregar_centro')) # reverse para el patron de diseño DRY y evitar repetir codigo (Se reutiliza el nombre de la vista, definido en los urls)
+            except:
+                messages.error(request, "No se pudo agregar")
+        else:
+            messages.error(request, "No se pudo agregar")
+    return render(request, 'hod_template/admin_template_umg/tmpl_agregar_centro.html', context)
+
+
+
+def listar_centro(request):
+    listado_centros = Centro.objects.all()
+    context = {
+        'listado_centros': listado_centros,
+        'page_title': 'Listado de centros universitarios'
+    }
+    return render(request, "hod_template/admin_template_umg/tmpl_listar_centro.html", context)
+
+
+
+def editar_centro(request, centro_id):
+    instancia = get_object_or_404(Centro, id=centro_id)
+    formObjeto = CentroForm(request.POST or None, instance=instancia)
+    context = {
+        'form': formObjeto,
+        'course_id': centro_id,
+        'page_title': 'Editar centro'
+    }
+    if request.method == 'POST':
+        if formObjeto.is_valid():
+            nombre = formObjeto.cleaned_data.get('nombre')
+            try:
+                centro = Centro.objects.get(id=centro_id)
+                centro.nombre = nombre
+                centro.save()
+                messages.success(request, "Felicidades, se ha actualizado!")
+            except:
+                messages.error(request, "No se pudo actualizar")
+        else:
+            messages.error(request, "No se pudo actualizar")
+    return render(request, 'hod_template/admin_template_umg/tmpl_editar_centro.html', context)
+
+
+
+def borrar_centro(request, centro_id):
+    centro = get_object_or_404(Centro, id=centro_id)
+    try:
+        centro.delete()
+        messages.success(request, "Eliminado!")
+    except Exception:
+        messages.error(
+            request, "Oops, no se pudo eliminar.")
+    return redirect(reverse('listar_centro'))

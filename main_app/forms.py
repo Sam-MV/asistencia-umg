@@ -189,3 +189,62 @@ class EditResultForm(FormSettings):
     class Meta:
         model = StudentResult
         fields = ['session_year', 'subject', 'student', 'test', 'exam']
+
+
+
+
+
+
+# =========================================================================================================================================
+# ============================================================== CODIGO UMG ===============================================================
+# =========================================================================================================================================
+# class UsuarioForm(FormSettings):
+#     email = forms.EmailField(required=True)
+#     genero = forms.ChoiceField(choices=[('H', 'Hombre'), ('M', 'Mujer')])
+#     nombres = forms.CharField(required=True)
+#     apellidos = forms.CharField(required=True)
+#     direccion = forms.CharField(widget=forms.Textarea)
+#     contrasenia = forms.CharField(widget=forms.PasswordInput)
+#     widget = {
+#         'contrasenia': forms.PasswordInput(),
+#     }
+#     img_perfil = forms.ImageField()
+
+#     def __init__(self, *args, **kwargs):
+#         super(UsuarioForm, self).__init__(*args, **kwargs)
+
+#         if kwargs.get('instance'):
+#             instance = kwargs.get('instance').admin.__dict__
+#             self.fields['contrasenia'].required = False
+#             for field in UsuarioForm.Meta.fields:
+#                 self.fields[field].initial = instance.get(field)
+#             if self.instance.pk is not None:
+#                 self.fields['contrasenia'].widget.attrs['placeholder'] = "Llena si quieres actualizar tu contrasenia"
+
+#     def clean_email(self, *args, **kwargs):
+#         formEmail = self.cleaned_data['email'].lower()
+#         if self.instance.pk is None:  # Insert
+#             if CustomUser.objects.filter(email=formEmail).exists():
+#                 raise forms.ValidationError(
+#                     "The given email is already registered")
+#         else:  # Update
+#             dbEmail = self.Meta.model.objects.get(
+#                 id=self.instance.pk).admin.email.lower()
+#             if dbEmail != formEmail:  # There has been changes
+#                 if CustomUser.objects.filter(email=formEmail).exists():
+#                     raise forms.ValidationError("The given email is already registered")
+
+#         return formEmail
+
+#     class Meta:
+#         model = CustomUser
+#         fields = [ 'nombres', 'apellidos', 'email', 'genero', 'contrasenia','img_perfil', 'direccion' ]
+
+
+class CentroForm(FormSettings):
+    def __init__(self, *args, **kwargs):
+        super(CentroForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        fields = ['nombre']
+        model = Centro

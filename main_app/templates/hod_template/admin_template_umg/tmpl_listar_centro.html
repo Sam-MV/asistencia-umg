@@ -1,0 +1,44 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% block page_title %}{{page_title}}{% endblock page_title %}
+
+{% block content %}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">{{page_title}}</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example2" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Editar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for centro in listado_centros %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{centro.nombre}}</td>
+                                    <td>
+                                        <a href="{% url 'editar_centro' centro.id %}" class="btn btn-primary">Editar</a> -
+                                        <a href="{% url 'borrar_centro' centro.id %}" onclick="return confirm('Quieres eliminar este registro?')" class="btn btn-danger">Borrar</a> 
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

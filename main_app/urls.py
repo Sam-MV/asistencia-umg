@@ -130,4 +130,19 @@ urlpatterns = [
     path('student/view/result/', student_views.student_view_result,
          name='student_view_result'),
 
+
+
+
+
+
+
+
+
+     # =========================================================================================================================================
+     # ============================================================== CODIGO UMG ===============================================================
+     # =========================================================================================================================================
+     path("centro/agregar",                  hod_views.agregar_centro, name='agregar_centro'),
+     path("centro/tabla/",                   hod_views.listar_centro,  name='listar_centro'),
+     path("centro/eliminar/<int:centro_id>", hod_views.editar_centro,  name='editar_centro'),
+     path("centro/borrar/<int:centro_id>",   hod_views.borrar_centro,  name='borrar_centro'),
 ]
