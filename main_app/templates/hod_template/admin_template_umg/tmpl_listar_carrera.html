@@ -20,6 +20,8 @@
                                     <th>#</th>
                                     <th>Código</th>
                                     <th>Nombre</th>
+                                    <th>Creación</th>
+                                    <th>Edición</th>
                                     <th>Editar</th>
                                 </tr>
                             </thead>
@@ -29,6 +31,8 @@
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{carrera.codigo}}</td>
                                     <td>{{carrera.nombre}}</td>
+                                    <td>{{carrera.fecha_creacion}}</td>
+                                    <td>{{carrera.fecha_actualizacion}}</td>
                                     <td>
                                         <a href="{% url 'editar_carrera' carrera.id %}" class="btn btn-primary">Editar</a> -
                                         <a href="{% url 'borrar_carrera' carrera.id %}" onclick="return confirm('Quieres eliminar este registro?')" class="btn btn-danger">Borrar</a> 

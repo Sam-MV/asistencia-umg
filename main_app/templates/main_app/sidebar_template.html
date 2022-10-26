@@ -55,7 +55,6 @@
                         </p>
                     </a>
                 </li>
-
                 <li class="nav-item">
                     {% url 'listar_centro' as listar_centro %}
                     <a href="{{listar_centro}}" class="nav-link {% if listar_centro == request.path %} active {% endif %}">
@@ -76,13 +75,32 @@
                         </p>
                     </a>
                 </li>
-
                 <li class="nav-item">
                     {% url 'listar_carrera' as listar_carrera %}
                     <a href="{{listar_carrera}}" class="nav-link {% if listar_carrera == request.path %} active {% endif %}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Listado de carreras
+                        </p>
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    {% url 'agregar_semestre' as agregar_semestre %}
+                    <a href="{{agregar_semestre}}" class="nav-link {% if agregar_semestre == request.path %} active {% endif %}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Agregar semestre
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    {% url 'listar_semestre' as listar_semestre %}
+                    <a href="{{listar_semestre}}" class="nav-link {% if listar_semestre == request.path %} active {% endif %}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Listado de semestres
                         </p>
                     </a>
                 </li>
@@ -107,7 +125,12 @@
                         </p>
                     </a>
                 </li> -->
-                <li class="nav-item">
+
+
+
+
+
+                <!-- <li class="nav-item">
                     {% url 'add_staff' as add_staff %}
                     <a href="{{add_staff}}" class="nav-link {% if add_staff == request.path %} active {% endif %}">
                         <i class="nav-icon fas fa-th"></i>
@@ -188,7 +211,11 @@
                             Manage Subject
                         </p>
                     </a>
-                </li>
+                </li> -->
+
+
+
+
                 <!-- <li class="nav-item">
                     {% url 'add_session' as add_session %}
                     <a href="{{add_session}}" class="nav-link  {% if add_session == request.path %} active {% endif %}">
@@ -209,7 +236,10 @@
                         </p>
                     </a>
                 </li> -->
-                <li class="nav-item">
+
+
+
+                <!-- <li class="nav-item">
                     {% url 'admin_view_attendance' as admin_view_attendance %}
 
                 <li class="nav-item">
@@ -220,7 +250,9 @@
                             View Attendance
                         </p>
                     </a>
-                </li>
+                </li> -->
+
+
                 <!-- <li class="nav-item">
                     {% url 'student_feedback_message' as student_feedback_message %}
 

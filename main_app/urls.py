@@ -157,4 +157,12 @@ urlpatterns = [
      path("carrera/tabla/",                    hod_views.listar_carrera,  name='listar_carrera'),
      path("carrera/eliminar/<int:carrera_id>", hod_views.editar_carrera,  name='editar_carrera'),
      path("carrera/borrar/<int:carrera_id>",   hod_views.borrar_carrera,  name='borrar_carrera'),
+
+     # =================================================================
+     # SEMESTRE UNIVERSITARIO
+     # =================================================================
+     path("semestre/agregar",                   hod_views.agregar_semestre, name='agregar_semestre'),
+     path("semestre/tabla/",                    hod_views.listar_semestre,  name='listar_semestre'),
+     path("semestre/eliminar/<int:semestre_id>", hod_views.editar_semestre,  name='editar_semestre'),
+     path("semestre/borrar/<int:semestre_id>",   hod_views.borrar_semestre,  name='borrar_semestre'),
 ]

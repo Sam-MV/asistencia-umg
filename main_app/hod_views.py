@@ -688,7 +688,7 @@ def delete_session(request, session_id):
 # =========================================================================================================================================
 
 # =================================================================
-# CENTRO UNIVERSITARIO
+# CENTRO UNIVERSITARIO (MANY_TO_MANY)
 # =================================================================
 def agregar_centro(request):
     form = CentroForm(request.POST or None) # It's like an xml but actually it's html
@@ -761,7 +761,7 @@ def borrar_centro(request, centro_id):
 
 
 # =================================================================
-# Carrera
+# Carrera (MANY_TO_MANY)
 # =================================================================
 def agregar_carrera(request):
     form = CarreraForm(request.POST or None)
@@ -844,3 +844,85 @@ def borrar_carrera(request, carrera_id):
         messages.error(
             request, "Oops, no se pudo eliminar.")
     return redirect(reverse('listar_carrera'))
+
+
+
+
+
+# =================================================================
+# Semestre (ONE_TO_MANY)
+# =================================================================
+def agregar_semestre(request):
+    form = SemestreForm(request.POST or None)
+    context = {
+        'form': form,
+        'page_title': 'Agregar Semestre'
+    }
+    if request.method == 'POST':
+        if form.is_valid():
+            codigo_nuevo = form.cleaned_data.get('codigo')
+            nombre_nuevo = form.cleaned_data.get('nombre')
+            carrera_id_nuevo = form.cleaned_data.get('carrera_id')
+            try:
+                semestre = Semestre()
+                semestre.codigo = codigo_nuevo
+                semestre.nombre = nombre_nuevo
+                semestre.carrera_id = carrera_id_nuevo
+                semestre.save()
+                messages.success(request, "Semestre agregado")
+                return redirect(reverse('agregar_semestre')) # reverse para el patron de diseño DRY y evitar repetir codigo (Se reutiliza el nombre de la vista, definido en los urls)
+            except Exception as error:
+                messages.error(request, "No se pudo agregar: ", error)
+        else:
+            messages.error(request, "No se pudo agregar")
+    return render(request, 'hod_template/admin_template_umg/tmpl_agregar_semestre.html', context)
+
+
+
+def listar_semestre(request):
+    listado_semestres = Semestre.objects.all()
+    context = {
+        'listado_semestres': listado_semestres,
+        'page_title': 'Listado de semestres universitarios'
+    }
+    return render(request, "hod_template/admin_template_umg/tmpl_listar_semestre.html", context)
+
+
+
+def editar_semestre(request, semestre_id):
+    instancia = get_object_or_404(Semestre, id=semestre_id)
+    formObjeto = SemestreForm(request.POST or None, instance=instancia)
+    context = {
+        'form': formObjeto,
+        'course_id': semestre_id,
+        'page_title': 'Editar semestre'
+    }
+    if request.method == 'POST':
+        if formObjeto.is_valid():
+            codigo_edicion = formObjeto.cleaned_data.get('codigo')
+            nombre_edicion = formObjeto.cleaned_data.get('nombre')
+            carrera_id_edicion = formObjeto.cleaned_data.get('carrera_id')
+            try:
+                semestre = Semestre.objects.get(id=semestre_id)
+                semestre.codigo = codigo_edicion
+                semestre.nombre = nombre_edicion
+                semestre.carrera_id = carrera_id_edicion
+                semestre.save()
+                messages.success(request, "Felicidades, se ha actualizado!")
+            except Exception as error:
+                messages.error(request, "No se pudo actualizar. Error: ", error)
+        else:
+            messages.error(request, "No se pudo actualizar")
+    return render(request, 'hod_template/admin_template_umg/tmpl_editar_semestre.html', context)
+
+
+
+def borrar_semestre(request, semestre_id):
+    semestre = get_object_or_404(Semestre, id=semestre_id)
+    try:
+        semestre.delete()
+        messages.success(request, "Eliminado!")
+    except Exception:
+        messages.error(
+            request, "Oops, no se pudo eliminar.")
+    return redirect(reverse('listar_semestre'))

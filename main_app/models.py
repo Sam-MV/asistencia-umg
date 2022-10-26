@@ -217,7 +217,7 @@ class Centro(models.Model):
 
 
 class Carrera(models.Model):
-    codigo = models.CharField(max_length=4, null=False, blank=False)
+    codigo = models.CharField(max_length=4, null=True, blank=True)
     nombre = models.CharField(max_length=150, null=False, blank=False)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
@@ -225,4 +225,16 @@ class Carrera(models.Model):
     centros = models.ManyToManyField(Centro)
 
     def __str__(self):
-        return self.codigo + ", " + self.nombre
+        return self.nombre
+
+
+class Semestre(models.Model):
+    codigo = models.CharField(max_length=4, null=True, blank=True)
+    nombre = models.CharField(max_length=25, null=False, blank=False)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_actualizacion = models.DateTimeField(auto_now=True)
+
+    carrera_id = models.ForeignKey(Carrera, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre
