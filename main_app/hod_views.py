@@ -691,17 +691,17 @@ def delete_session(request, session_id):
 # CENTRO UNIVERSITARIO
 # =================================================================
 def agregar_centro(request):
-    form = CentroForm(request.POST or None)
+    form = CentroForm(request.POST or None) # It's like an xml but actually it's html
     context = {
         'form': form,
         'page_title': 'Agregar Centro'
     }
     if request.method == 'POST':
         if form.is_valid():
-            nombre_html = form.cleaned_data.get('nombre')
+            nombre_nuevo = form.cleaned_data.get('nombre')
             try:
                 centro = Centro()
-                centro.nombre = nombre_html
+                centro.nombre = nombre_nuevo
                 centro.save()
                 messages.success(request, "Centro agregado")
                 return redirect(reverse('agregar_centro')) # reverse para el patron de diseño DRY y evitar repetir codigo (Se reutiliza el nombre de la vista, definido en los urls)
@@ -733,10 +733,10 @@ def editar_centro(request, centro_id):
     }
     if request.method == 'POST':
         if formObjeto.is_valid():
-            nombre = formObjeto.cleaned_data.get('nombre')
+            nombre_nuevo = formObjeto.cleaned_data.get('nombre')
             try:
                 centro = Centro.objects.get(id=centro_id)
-                centro.nombre = nombre
+                centro.nombre = nombre_nuevo
                 centro.save()
                 messages.success(request, "Felicidades, se ha actualizado!")
             except:
@@ -756,3 +756,91 @@ def borrar_centro(request, centro_id):
         messages.error(
             request, "Oops, no se pudo eliminar.")
     return redirect(reverse('listar_centro'))
+
+
+
+
+# =================================================================
+# Carrera
+# =================================================================
+def agregar_carrera(request):
+    form = CarreraForm(request.POST or None)
+    context = {
+        'form': form,
+        'page_title': 'Agregar Carrera'
+    }
+    if request.method == 'POST':
+        if form.is_valid():
+            codigo_nuevo = form.cleaned_data.get('codigo')
+            nombre_nuevo = form.cleaned_data.get('nombre')
+            centros_nuevo = form.cleaned_data.get('centros')
+            try:
+                carrera = Carrera()
+                carrera.codigo = codigo_nuevo
+                carrera.nombre = nombre_nuevo
+                carrera.save()
+                for centro in centros_nuevo:
+                    carrera.centros.add(centro.id)
+                messages.success(request, "Carrera agregado")
+                return redirect(reverse('agregar_carrera')) # reverse para el patron de diseño DRY y evitar repetir codigo (Se reutiliza el nombre de la vista, definido en los urls)
+            except Exception as error:
+                messages.error(request, "No se pudo agregar")
+        else:
+            messages.error(request, "No se pudo agregar")
+    return render(request, 'hod_template/admin_template_umg/tmpl_agregar_carrera.html', context)
+
+
+
+def listar_carrera(request):
+    listado_carreras = Carrera.objects.all()
+    context = {
+        'listado_carreras': listado_carreras,
+        'page_title': 'Listado de carreras universitarios'
+    }
+    return render(request, "hod_template/admin_template_umg/tmpl_listar_carrera.html", context)
+
+
+
+def editar_carrera(request, carrera_id):
+    instancia = get_object_or_404(Carrera, id=carrera_id)
+    formObjeto = CarreraForm(request.POST or None, instance=instancia)
+    context = {
+        'form': formObjeto,
+        'course_id': carrera_id,
+        'page_title': 'Editar carrera'
+    }
+    if request.method == 'POST':
+        if formObjeto.is_valid():
+            codigo_edicion = formObjeto.cleaned_data.get('codigo')
+            nombre_edicion = formObjeto.cleaned_data.get('nombre')
+            centros_edicion = formObjeto.cleaned_data.get('centros')
+            try:
+                carrera = Carrera.objects.get(id=carrera_id)
+                carrera.codigo = codigo_edicion
+                carrera.nombre = nombre_edicion
+                carrera.save()
+                # Elimina los registros previamente asociados
+                # Removes all prev associated records
+                centros_en_db = carrera.centros.all()
+                for centro_db in centros_en_db:
+                    carrera.centros.remove(centro_db)
+                for nuevo_centro in centros_edicion:
+                    carrera.centros.add(nuevo_centro.id)
+                messages.success(request, "Felicidades, se ha actualizado!")
+            except Exception as error:
+                messages.error(request, "No se pudo actualizar. Error: ", error)
+        else:
+            messages.error(request, "No se pudo actualizar")
+    return render(request, 'hod_template/admin_template_umg/tmpl_editar_carrera.html', context)
+
+
+
+def borrar_carrera(request, carrera_id):
+    carrera = get_object_or_404(Carrera, id=carrera_id)
+    try:
+        carrera.delete()
+        messages.success(request, "Eliminado!")
+    except Exception:
+        messages.error(
+            request, "Oops, no se pudo eliminar.")
+    return redirect(reverse('listar_carrera'))

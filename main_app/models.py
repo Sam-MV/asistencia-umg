@@ -208,9 +208,21 @@ def save_user_profile(sender, instance, **kwargs):
 # ============================================================== CODIGO UMG ===============================================================
 # =========================================================================================================================================
 class Centro(models.Model):
-    nombre = models.TextField(null=False, blank=False)
+    nombre = models.CharField(max_length=150, null=False, blank=False)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.nombre
+
+
+class Carrera(models.Model):
+    codigo = models.CharField(max_length=4, null=False, blank=False)
+    nombre = models.CharField(max_length=150, null=False, blank=False)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_actualizacion = models.DateTimeField(auto_now=True)
+
+    centros = models.ManyToManyField(Centro)
+
+    def __str__(self):
+        return self.codigo + ", " + self.nombre

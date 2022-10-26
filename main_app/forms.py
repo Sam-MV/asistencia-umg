@@ -193,11 +193,6 @@ class EditResultForm(FormSettings):
 
 
 
-
-
-# =========================================================================================================================================
-# ============================================================== CODIGO UMG ===============================================================
-# =========================================================================================================================================
 # class UsuarioForm(FormSettings):
 #     email = forms.EmailField(required=True)
 #     genero = forms.ChoiceField(choices=[('H', 'Hombre'), ('M', 'Mujer')])
@@ -241,6 +236,13 @@ class EditResultForm(FormSettings):
 #         fields = [ 'nombres', 'apellidos', 'email', 'genero', 'contrasenia','img_perfil', 'direccion' ]
 
 
+
+
+
+# =========================================================================================================================================
+# ============================================================== CODIGO UMG ===============================================================
+# =========================================================================================================================================
+
 class CentroForm(FormSettings):
     def __init__(self, *args, **kwargs):
         super(CentroForm, self).__init__(*args, **kwargs)
@@ -248,3 +250,13 @@ class CentroForm(FormSettings):
     class Meta:
         fields = ['nombre']
         model = Centro
+
+
+
+class CarreraForm(FormSettings):
+    def __init__(self, *args, **kwargs):
+        super(CarreraForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        fields = ['codigo', 'nombre', 'centros']
+        model = Carrera

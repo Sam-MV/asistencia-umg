@@ -141,8 +141,20 @@ urlpatterns = [
      # =========================================================================================================================================
      # ============================================================== CODIGO UMG ===============================================================
      # =========================================================================================================================================
+     
+     # =================================================================
+     # CENTRO UNIVERSITARIO
+     # =================================================================
      path("centro/agregar",                  hod_views.agregar_centro, name='agregar_centro'),
      path("centro/tabla/",                   hod_views.listar_centro,  name='listar_centro'),
      path("centro/eliminar/<int:centro_id>", hod_views.editar_centro,  name='editar_centro'),
      path("centro/borrar/<int:centro_id>",   hod_views.borrar_centro,  name='borrar_centro'),
+
+     # =================================================================
+     # CENTRO UNIVERSITARIO
+     # =================================================================
+     path("carrera/agregar",                   hod_views.agregar_carrera, name='agregar_carrera'),
+     path("carrera/tabla/",                    hod_views.listar_carrera,  name='listar_carrera'),
+     path("carrera/eliminar/<int:carrera_id>", hod_views.editar_carrera,  name='editar_carrera'),
+     path("carrera/borrar/<int:carrera_id>",   hod_views.borrar_carrera,  name='borrar_carrera'),
 ]

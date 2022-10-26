@@ -47,8 +47,8 @@
                 </li>
 
                 <li class="nav-item">
-                    {% url 'agregar_centro' as add_staff %}
-                    <a href="{{add_staff}}" class="nav-link {% if add_staff == request.path %} active {% endif %}">
+                    {% url 'agregar_centro' as agregar_centro %}
+                    <a href="{{agregar_centro}}" class="nav-link {% if agregar_centro == request.path %} active {% endif %}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Agregar centro
@@ -57,8 +57,8 @@
                 </li>
 
                 <li class="nav-item">
-                    {% url 'listar_centro' as add_staff %}
-                    <a href="{{add_staff}}" class="nav-link {% if add_staff == request.path %} active {% endif %}">
+                    {% url 'listar_centro' as listar_centro %}
+                    <a href="{{listar_centro}}" class="nav-link {% if listar_centro == request.path %} active {% endif %}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Listado de centros
@@ -66,6 +66,26 @@
                     </a>
                 </li>
                 
+
+                <li class="nav-item">
+                    {% url 'agregar_carrera' as agregar_carrera %}
+                    <a href="{{agregar_carrera}}" class="nav-link {% if agregar_carrera == request.path %} active {% endif %}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Agregar carrera
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    {% url 'listar_carrera' as listar_carrera %}
+                    <a href="{{listar_carrera}}" class="nav-link {% if listar_carrera == request.path %} active {% endif %}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Listado de carreras
+                        </p>
+                    </a>
+                </li>
                 
                 <!-- <li class="nav-item">
                     {% url 'admin_notify_staff' as admin_notify_staff %}
