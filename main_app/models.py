@@ -208,33 +208,61 @@ def save_user_profile(sender, instance, **kwargs):
 # ============================================================== CODIGO UMG ===============================================================
 # =========================================================================================================================================
 class Centro(models.Model):
-    nombre = models.CharField(max_length=150, null=False, blank=False)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    fecha_actualizacion = models.DateTimeField(auto_now=True)
+    nombre                      = models.CharField(max_length=150, null=False, blank=False)
+    fecha_creacion              = models.DateTimeField(auto_now_add=True)
+    fecha_actualizacion         = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.nombre
+
 
 
 class Carrera(models.Model):
-    codigo = models.CharField(max_length=4, null=True, blank=True)
-    nombre = models.CharField(max_length=150, null=False, blank=False)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    fecha_actualizacion = models.DateTimeField(auto_now=True)
+    codigo                      = models.CharField(max_length=4, null=True, blank=True)
+    nombre                      = models.CharField(max_length=150, null=False, blank=False)
+    fecha_creacion              = models.DateTimeField(auto_now_add=True)
+    fecha_actualizacion         = models.DateTimeField(auto_now=True)
 
-    centros = models.ManyToManyField(Centro)
+    centros                     = models.ManyToManyField(Centro)
 
     def __str__(self):
         return self.nombre
 
 
-class Semestre(models.Model):
-    codigo = models.CharField(max_length=4, null=True, blank=True)
-    nombre = models.CharField(max_length=25, null=False, blank=False)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    fecha_actualizacion = models.DateTimeField(auto_now=True)
 
-    carrera_id = models.ForeignKey(Carrera, on_delete=models.CASCADE)
+class Semestre(models.Model):
+    codigo                      = models.CharField(max_length=4, null=True, blank=True)
+    nombre                      = models.CharField(max_length=25, null=False, blank=False)
+    fecha_creacion              = models.DateTimeField(auto_now_add=True)
+    fecha_actualizacion         = models.DateTimeField(auto_now=True)
+
+    carrera_id                  = models.ForeignKey(Carrera, on_delete=models.CASCADE) #MANY_TO_ONE
+
+    def __str__(self):
+        return self.nombre
+
+
+
+class Curso(models.Model):
+    codigo                      = models.CharField(max_length=4, null=True, blank=True)
+    nombre                      = models.CharField(max_length=50, null=False, blank=False)
+    fecha_creacion              = models.DateTimeField(auto_now_add=True)
+    fecha_actualizacion         = models.DateTimeField(auto_now=True)
+
+    semestre_id                 = models.ForeignKey(Semestre, on_delete=models.DO_NOTHING) 
+
+    def __str__(self):
+        return self.nombre
+
+
+
+class Seccion(models.Model):
+    codigo                      = models.CharField(max_length=4, null=True, blank=True)
+    nombre                      = models.CharField(max_length=50, null=False, blank=False)
+    fecha_creacion              = models.DateTimeField(auto_now_add=True)
+    fecha_actualizacion         = models.DateTimeField(auto_now=True)
+
+    cursos                      = models.ManyToManyField(Curso)
 
     def __str__(self):
         return self.nombre

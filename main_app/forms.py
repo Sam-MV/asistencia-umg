@@ -270,3 +270,23 @@ class SemestreForm(FormSettings):
     class Meta:
         fields = ['codigo', 'nombre', 'carrera_id']
         model = Semestre
+
+
+
+class CursoForm(FormSettings):
+    def __init__(self, *args, **kwargs):
+        super(CursoForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        fields = ['codigo', 'nombre', 'semestre_id']
+        model = Curso
+
+
+
+class SeccionForm(FormSettings):
+    def __init__(self, *args, **kwargs):
+        super(SeccionForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        fields = ['codigo', 'nombre', 'cursos']
+        model = Seccion

@@ -165,4 +165,20 @@ urlpatterns = [
      path("semestre/tabla/",                    hod_views.listar_semestre,  name='listar_semestre'),
      path("semestre/eliminar/<int:semestre_id>", hod_views.editar_semestre,  name='editar_semestre'),
      path("semestre/borrar/<int:semestre_id>",   hod_views.borrar_semestre,  name='borrar_semestre'),
+
+     # =================================================================
+     # CURSO UNIVERSITARIO
+     # =================================================================
+     path("curso/agregar",                   hod_views.agregar_curso, name='agregar_curso'),
+     path("curso/tabla/",                    hod_views.listar_curso,  name='listar_curso'),
+     path("curso/eliminar/<int:curso_id>", hod_views.editar_curso,  name='editar_curso'),
+     path("curso/borrar/<int:curso_id>",   hod_views.borrar_curso,  name='borrar_curso'),
+
+     # =================================================================
+     # SECCION UNIVERSITARIO
+     # =================================================================
+     path("seccion/agregar",                   hod_views.agregar_seccion, name='agregar_seccion'),
+     path("seccion/tabla/",                    hod_views.listar_seccion,  name='listar_seccion'),
+     path("seccion/eliminar/<int:seccion_id>", hod_views.editar_seccion,  name='editar_seccion'),
+     path("seccion/borrar/<int:seccion_id>",   hod_views.borrar_seccion,  name='borrar_seccion'),
 ]

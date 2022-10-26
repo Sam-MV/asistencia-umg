@@ -104,6 +104,44 @@
                         </p>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    {% url 'agregar_curso' as agregar_curso %}
+                    <a href="{{agregar_curso}}" class="nav-link {% if agregar_curso == request.path %} active {% endif %}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Agregar curso
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    {% url 'listar_curso' as listar_curso %}
+                    <a href="{{listar_curso}}" class="nav-link {% if listar_curso == request.path %} active {% endif %}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Listado de cursos
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    {% url 'agregar_seccion' as agregar_seccion %}
+                    <a href="{{agregar_seccion}}" class="nav-link {% if agregar_seccion == request.path %} active {% endif %}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Agregar sección
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    {% url 'listar_seccion' as listar_seccion %}
+                    <a href="{{listar_seccion}}" class="nav-link {% if listar_seccion == request.path %} active {% endif %}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Listado de secciones
+                        </p>
+                    </a>
+                </li>
                 
                 <!-- <li class="nav-item">
                     {% url 'admin_notify_staff' as admin_notify_staff %}

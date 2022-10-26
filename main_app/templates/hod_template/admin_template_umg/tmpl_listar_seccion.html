@@ -1,0 +1,50 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% block page_title %}{{page_title}}{% endblock page_title %}
+
+{% block content %}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">{{page_title}}</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example2" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Creación</th>
+                                    <th>Edición</th>
+                                    <th>Editar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for seccion in listado_seccions %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{seccion.codigo}}</td>
+                                    <td>{{seccion.nombre}}</td>
+                                    <td>{{seccion.fecha_creacion}}</td>
+                                    <td>{{seccion.fecha_actualizacion}}</td>
+                                    <td>
+                                        <a href="{% url 'editar_seccion' seccion.id %}" class="btn btn-primary">Editar</a> -
+                                        <a href="{% url 'borrar_seccion' seccion.id %}" onclick="return confirm('Quieres eliminar este registro?')" class="btn btn-danger">Borrar</a> 
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

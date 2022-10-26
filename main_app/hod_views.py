@@ -760,6 +760,7 @@ def borrar_centro(request, centro_id):
 
 
 
+
 # =================================================================
 # Carrera (MANY_TO_MANY)
 # =================================================================
@@ -926,3 +927,174 @@ def borrar_semestre(request, semestre_id):
         messages.error(
             request, "Oops, no se pudo eliminar.")
     return redirect(reverse('listar_semestre'))
+
+
+
+
+
+# =================================================================
+# Curso (ONE_TO_MANY)
+# =================================================================
+def agregar_curso(request):
+    form = CursoForm(request.POST or None)
+    context = {
+        'form': form,
+        'page_title': 'Agregar Curso'
+    }
+    if request.method == 'POST':
+        if form.is_valid():
+            codigo_nuevo = form.cleaned_data.get('codigo')
+            nombre_nuevo = form.cleaned_data.get('nombre')
+            semestre_id_nuevo = form.cleaned_data.get('semestre_id')
+            try:
+                curso = Curso()
+                curso.codigo = codigo_nuevo
+                curso.nombre = nombre_nuevo
+                curso.semestre_id = semestre_id_nuevo
+                curso.save()
+                messages.success(request, "Curso agregado")
+                return redirect(reverse('agregar_curso')) # reverse para el patron de diseño DRY y evitar repetir codigo (Se reutiliza el nombre de la vista, definido en los urls)
+            except Exception as error:
+                messages.error(request, "No se pudo agregar: ", error)
+        else:
+            messages.error(request, "No se pudo agregar")
+    return render(request, 'hod_template/admin_template_umg/tmpl_agregar_curso.html', context)
+
+
+
+def listar_curso(request):
+    listado_cursos = Curso.objects.all()
+    context = {
+        'listado_cursos': listado_cursos,
+        'page_title': 'Listado de cursos universitarios'
+    }
+    return render(request, "hod_template/admin_template_umg/tmpl_listar_curso.html", context)
+
+
+
+def editar_curso(request, curso_id):
+    instancia = get_object_or_404(Curso, id=curso_id)
+    formObjeto = CursoForm(request.POST or None, instance=instancia)
+    context = {
+        'form': formObjeto,
+        'course_id': curso_id,
+        'page_title': 'Editar curso'
+    }
+    if request.method == 'POST':
+        if formObjeto.is_valid():
+            codigo_edicion = formObjeto.cleaned_data.get('codigo')
+            nombre_edicion = formObjeto.cleaned_data.get('nombre')
+            semestre_id_edicion = formObjeto.cleaned_data.get('semestre_id')
+            try:
+                curso = Curso.objects.get(id=curso_id)
+                curso.codigo = codigo_edicion
+                curso.nombre = nombre_edicion
+                curso.semestre_id = semestre_id_edicion
+                curso.save()
+                messages.success(request, "Felicidades, se ha actualizado!")
+            except Exception as error:
+                messages.error(request, "No se pudo actualizar. Error: ", error)
+        else:
+            messages.error(request, "No se pudo actualizar")
+    return render(request, 'hod_template/admin_template_umg/tmpl_editar_curso.html', context)
+
+
+
+def borrar_curso(request, curso_id):
+    curso = get_object_or_404(Curso, id=curso_id)
+    try:
+        curso.delete()
+        messages.success(request, "Eliminado!")
+    except Exception:
+        messages.error(
+            request, "Oops, no se pudo eliminar.")
+    return redirect(reverse('listar_curso'))
+
+
+
+
+
+# =================================================================
+# Seccion (MANY_TO_MANY)
+# =================================================================
+def agregar_seccion(request):
+    form = SeccionForm(request.POST or None)
+    context = {
+        'form': form,
+        'page_title': 'Agregar Seccion'
+    }
+    if request.method == 'POST':
+        if form.is_valid():
+            codigo_nuevo = form.cleaned_data.get('codigo')
+            nombre_nuevo = form.cleaned_data.get('nombre')
+            cursos_nuevo = form.cleaned_data.get('cursos')
+            try:
+                seccion = Seccion()
+                seccion.codigo = codigo_nuevo
+                seccion.nombre = nombre_nuevo
+                seccion.save()
+                for centro in cursos_nuevo:
+                    seccion.cursos.add(centro.id)
+                messages.success(request, "Seccion agregado")
+                return redirect(reverse('agregar_seccion')) # reverse para el patron de diseño DRY y evitar repetir codigo (Se reutiliza el nombre de la vista, definido en los urls)
+            except Exception as error:
+                messages.error(request, "No se pudo agregar")
+        else:
+            messages.error(request, "No se pudo agregar")
+    return render(request, 'hod_template/admin_template_umg/tmpl_agregar_seccion.html', context)
+
+
+
+def listar_seccion(request):
+    listado_seccions = Seccion.objects.all()
+    context = {
+        'listado_seccions': listado_seccions,
+        'page_title': 'Listado de seccions universitarios'
+    }
+    return render(request, "hod_template/admin_template_umg/tmpl_listar_seccion.html", context)
+
+
+
+def editar_seccion(request, seccion_id):
+    instancia = get_object_or_404(Seccion, id=seccion_id)
+    formObjeto = SeccionForm(request.POST or None, instance=instancia)
+    context = {
+        'form': formObjeto,
+        'course_id': seccion_id,
+        'page_title': 'Editar seccion'
+    }
+    if request.method == 'POST':
+        if formObjeto.is_valid():
+            codigo_edicion = formObjeto.cleaned_data.get('codigo')
+            nombre_edicion = formObjeto.cleaned_data.get('nombre')
+            cursos_edicion = formObjeto.cleaned_data.get('cursos')
+            try:
+                seccion = Seccion.objects.get(id=seccion_id)
+                seccion.codigo = codigo_edicion
+                seccion.nombre = nombre_edicion
+                seccion.save()
+                # Elimina los registros previamente asociados
+                # Removes all prev associated records
+                cursos_en_db = seccion.cursos.all()
+                for centro_db in cursos_en_db:
+                    seccion.cursos.remove(centro_db)
+                for nuevo_centro in cursos_edicion:
+                    seccion.cursos.add(nuevo_centro.id)
+                messages.success(request, "Felicidades, se ha actualizado!")
+            except Exception as error:
+                messages.error(request, "No se pudo actualizar. Error: ", error)
+        else:
+            messages.error(request, "No se pudo actualizar")
+    return render(request, 'hod_template/admin_template_umg/tmpl_editar_seccion.html', context)
+
+
+
+def borrar_seccion(request, seccion_id):
+    seccion = get_object_or_404(Seccion, id=seccion_id)
+    try:
+        seccion.delete()
+        messages.success(request, "Eliminado!")
+    except Exception:
+        messages.error(
+            request, "Oops, no se pudo eliminar.")
+    return redirect(reverse('listar_seccion'))
